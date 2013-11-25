@@ -1,0 +1,23 @@
+title : Public Private Sector
+
+safe: true
+lsi: false
+pygments: true
+auto: true
+
+source: data-json-file-merger
+destination: data-json-file-merger
+
+permalink: /:categories/:year/:month/:day/:title 
+exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
+
+paginate: 1000
+paginate_path: "/blog/page:num"
+
+production_url : http://ed-data.github.io/fafsa-api/
+
+BASE_PATH : http://kin.lane.github.io/data-json-file-merger/
+
+archive_path: /archive.html
+categories_path : /categories.html
+tags_path : /tags.html

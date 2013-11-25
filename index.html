@@ -1,79 +1,137 @@
-<!DOCTYPE html>
-<html>
+---
+layout: default
+title: Free Application for Federal Student Aid (FAFSA) API
+overview: true
+---  
+  
+<script type="text/javascript">
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Data-json-file-merger : This is a tool for merging multiple data.json files." />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Data-json-file-merger</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/kinlane/data-json-file-merger">View on GitHub</a>
-
-          <h1 id="project_title">Data-json-file-merger</h1>
-          <h2 id="project_tagline">This is a tool for merging multiple data.json files.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/kinlane/data-json-file-merger/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/kinlane/data-json-file-merger/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Data-json-file-merger maintained by <a href="https://github.com/kinlane">kinlane</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+    function readfile(f,i) {
+        var reader = new FileReader(); 
+        reader.readAsText(f); 
+        reader.onload = function() { 
+            
+            var text = reader.result; 
+            
+            var out = document.getElementById("datafile"+i);  
+            out.innerHTML = "";                          
+            out.appendChild(document.createTextNode(text));
     
+        }
+        reader.onerror = function(e) {
+            console.log("Error", e);  
+        };
+    }    
 
-  </body>
-</html>
+    function addRows()
+        {
+         $NumberOfRows = document.getElementById("NumberOfRows").value;     
+         $NumberOfRows++;
+         //alert($NumberOfRows);
+         
+         $rowHTML = '<tr><td><p><label><strong>' + $NumberOfRows + ') Upload Data.json >></strong></label></p><div class="settingsGroup"><p><input type="file" onchange="readfile(this.files[0],' + $NumberOfRows + ')"></input></p></div></td><td><textarea cols="40" rows="5" id="datafile' + $NumberOfRows + '" style="border: 1px solid #000;"></textarea></td></tr>'; 
+         $("#mergefiles").append($rowHTML);
+         
+         document.getElementById("NumberOfRows").value = $NumberOfRows;
+            }
+
+        function mergeFiles()
+            {
+   
+            $mergedArray = new Array();
+            $totalCount = 0;
+            
+            mf = document.getElementsByTagName("textarea");
+        $.each(mf, function(index, item) {                
+            
+             $thisJSON = item.value;
+             
+             if($thisJSON!='')
+                 {                 
+                 $thisArray = jQuery.parseJSON($thisJSON);
+
+                 $.each($thisArray, function(index2, item2) {
+                   
+                    $itemArray = {};
+                    for (var key in item2) 
+                        {
+                        $itemArray[key] = item2[key]; 
+                        }
+                    //alert(dodump($itemArray));
+
+                    $mergedArray.push($itemArray);
+                    $totalCount++;
+
+                 }); 
+                 
+                }
+        });  
+        
+        //alert(dodump($mergedArray));
+        
+        $mergedJSON = JSON.stringify($mergedArray);
+        
+        var out = document.getElementById("mergeddata");  
+        out.innerHTML = "";                          
+        out.appendChild(document.createTextNode($mergedJSON));            
+          
+        document.getElementById("MergedArea").style.display = '';
+        
+        }
+</script>    
+  
+<h1>Data.json File Merger</h1>
+
+<p>This is a JavaScript tool that merges data.json files. You can add more than two rows by selecting "Add Another File". When ready, hit "Merge Files" and all files will be merged into a single and presented via a text area.</p>
+<p>If you 
+<form id='settingsForm'>
+  <table cellpadding="1" cellspoacing="1" width="100%" id="mergefiles">
+      <input type="hidden" id="NumberOfRows" value="2" />
+      <tr>
+          <td>
+              <p><label><strong>1) Upload Data.json >></strong></label></p>
+              <div class="settingsGroup">
+                <p><input type="file" onchange="readfile(this.files[0],1)"></input></p>
+              </div>   
+          </td>
+          <td>
+              <textarea cols="40" rows="5" id="datafile1" style="border: 1px solid #000;"></textarea>
+          </td>
+      </tr>
+      <tr>
+          <td>
+              <p><label><strong>2) Upload Data.json >></strong></label></p>
+              <div class="settingsGroup">
+                <p><input type="file" onchange="readfile(this.files[0],2)"></input></p>
+              </div>   
+          </td>
+          <td>
+              <textarea cols="40" rows="5" id="datafile2" style="border: 1px solid #000;"></textarea>
+          </td>
+      </tr>                              
+  </table>    
+</form>  
+<table cellpadding="5" cellspacing="5" align="center">
+    <tr>
+        <td>                      
+            <input type="button" name="addRow" value="Add Another File" onclick="addRows(); return false;" style="padding: 5px;" />
+        </td>
+        <td>
+            <input type="button" name="addRow" value="Merge Files" onclick="mergeFiles(); return false;" style="padding: 5px;" />
+        </td>
+    </tr>
+</table>
+
+<div id="MergedArea" style="display:none;">
+    <p align="center"><strong>Merged</strong></p>
+    <textarea cols="40" rows="5" id="mergeddata" style="border: 1px solid #000; width: 100%; height: 400px;"></textarea>
+</div>
+                        
+<hr />
+<!-- 3scale -->
+<p align="center">
+<a href="http://bit.ly/13esk6Q" target="_blank" title="APIs From 3Scale">
+    <img src="https://s3.amazonaws.com/kinlane-productions/api-service-providers/3Scale/empowered-by-3scale.png" width="300" style="padding-bottom: 15px;" />
+</a>        
+</p>  
+<hr />
