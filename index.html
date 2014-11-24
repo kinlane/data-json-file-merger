@@ -4,6 +4,7 @@ title: Data.json File Merger
 overview: true
 ---  
   
+<script src="https://raw.githubusercontent.com/eligrey/FileSaver.js/master/FileSaver.min.js" type="text/javascript"></script> 
 <script type="text/javascript">
 
     function readfile(f,i) {
@@ -70,12 +71,9 @@ overview: true
         //alert(dodump($mergedArray));
         
         $mergedJSON = JSON.stringify($mergedArray);
-                         
-        var encodedUri = "data:application/json;charset=utf-8," + encodeURI($mergedJSON);
-        $("#mergeddata_link").attr("href", encodedUri);
-        $("#mergeddata_link").attr("download", "data.json");
-
-        $("#mergeddata_link").css("visibility", "visible");
+                       
+        var blob = new Blob([$mergedJSON], {type: "application/json;charset=utf-8"});
+        saveAs(blob, "data.json");
         
         }
 </script>    
@@ -122,11 +120,6 @@ overview: true
         </td>
     </tr>
 </table>
-
-<div style="text-align: center; padding : 2em 0">
-  <a id="mergeddata_link" style="padding : .5em; border: 1px solid #666; visibility: hidden" href="#">Download Merged Data.json</a>
-</div>
-
                         
 <hr />
 <!-- 3scale -->
