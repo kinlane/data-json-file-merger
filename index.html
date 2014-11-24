@@ -71,7 +71,7 @@ overview: true
         
         $mergedJSON = JSON.stringify($mergedArray);
                          
-        var encodedUri = "data:text/csv;charset=utf-8," + encodeURI($mergedJSON);
+        var encodedUri = "data:application/json;charset=utf-8," + encodeURI($mergedJSON);
         $("#mergeddata_link").attr("href", encodedUri);
         $("#mergeddata_link").attr("download", "data.json");
 
