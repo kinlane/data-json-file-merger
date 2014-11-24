@@ -70,12 +70,12 @@ overview: true
         //alert(dodump($mergedArray));
         
         $mergedJSON = JSON.stringify($mergedArray);
-        
-        var out = document.getElementById("mergeddata");  
-        out.innerHTML = "";                          
-        out.appendChild(document.createTextNode($mergedJSON));            
-          
-        document.getElementById("MergedArea").style.display = '';
+                         
+        var encodedUri = "data:text/csv;charset=utf-8," + encodeURI($mergedJSON);
+        $("#mergeddata_link").attr("href", encodedUri);
+        $("#mergeddata_link").attr("download", "data.json");
+
+        $("#mergeddata_link").css("visibility", "visible");
         
         }
 </script>    
@@ -84,7 +84,7 @@ overview: true
 
 <p>This is a JavaScript tool that merges data.json files. You can add more than two rows by selecting "Add Another File". When ready, hit "Merge Files" and all files will be merged into a single and presented via a text area.</p>
 <p>If it doesn't work, or there are features you'd like to add, use the <a href="https://github.com/kinlane/data-json-file-merger/issues">issue manager on the Github repo</a>.</p>
-<p align="center"><i>(upload only works in Chrome & firefox, for Internet Explorer  paste in contents of files to textareas)</i></p>
+<p align="center"><i>(upload only works in Chrome &amp; firefox, for Internet Explorer  paste in contents of files to textareas)</i></p>
 <form id='settingsForm'>
   <table cellpadding="1" cellspoacing="1" width="100%" id="mergefiles">
       <input type="hidden" id="NumberOfRows" value="2" />
@@ -123,10 +123,10 @@ overview: true
     </tr>
 </table>
 
-<div id="MergedArea" style="display:none;">
-    <p align="center"><strong>Merged</strong></p>
-    <textarea cols="40" rows="5" id="mergeddata" style="border: 1px solid #000; width: 100%; height: 400px;"></textarea>
+<div style="text-align: center; padding : 2em 0">
+  <a id="mergeddata_link" style="padding : .5em; border: 1px solid #666; visibility: hidden" href="#">Download Merged Data.json</a>
 </div>
+
                         
 <hr />
 <!-- 3scale -->
